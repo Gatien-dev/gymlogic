@@ -65,7 +65,8 @@ namespace AdminLTE_MVC.Controllers
             ViewBag.PageDescription = "Ajoutez, Modifiez, suspendez ou supprimez des abonnements.";
             return View(abonnements.ToList());
         }
-        public ActionResult fixEndDates()
+        [Authorize(Roles = "Admin")]
+        public ActionResult fixEndDates(int minimumDays = 0)
         {
             //var allAbo = db.Abonnements.Include(a => a.Forfait).ToList();
             //for (int i = 0; i < allAbo.Count(); i++)
@@ -73,14 +74,20 @@ namespace AdminLTE_MVC.Controllers
             //    var abo = db.Abonnements.Where(a => a.ID == allAbo[i].ID).Include(a => a.Forfait).First();
             //    abo.DateFin = abo.DateDebut.AddDays(abo.Forfait.Duree);
             //}
-            foreach (var abo in db.Abonnements.Where(a => a.Forfait.Duree > 30).Include(a => a.Forfait))
+
+            foreach (var abo in db.Abonnements.Where(a => a.Forfait.Duree > minimumDays).Include(a => a.Forfait))
             {
                 abo.DateFin = abo.DateDebut.AddDays(abo.Forfait.Duree);
+
+                abo.NbJoursRestants = (int)(abo.DateFin - DateTime.Now).TotalDays + 1;
+                if (abo.NbJoursRestants < 0) abo.NbJoursRestants = 0;
             }
             db.SaveChanges();
 
             Session["ListeAValider"] = null;
             Session["listeNonValidee"] = null;
+
+
             return RedirectToAction("all");
         }
 
@@ -258,7 +265,13 @@ namespace AdminLTE_MVC.Controllers
             ViewBag.approver = db.Users.FirstOrDefault(u => u.Id == abonnement.ApproverUID);
             return View(abonnement);
         }
+        public ActionResult refresh()
+        {
 
+            Session["ListeAValider"] = null;
+            Session["listeNonValidee"] = null;
+            return RedirectToAction("unchecked");
+        }
         [Authorize(Roles = "Admin,Valider les Abonnements")]
         public ActionResult Valider(int? id)
         {
@@ -404,7 +417,8 @@ namespace AdminLTE_MVC.Controllers
                 abo.Suspendu = false;
                 abo.MailSent = false;
                 abo.UserID = User.Identity.GetUserId();
-                abo.DateFin = DateTime.Now.AddDays(forfait.Duree);
+                abo.DateFin = abonnement.DateDebut.AddDays(forfait.Duree);
+                abo.NbJoursRestants = (int)(abo.DateFin - DateTime.Now).TotalDays + 1;
                 //abo.DateRenouvellement = DateTime.Now;
                 abo.DateDecompte = DateTime.Now;
                 abo.LastCheckDate = DateTime.Now;
@@ -482,23 +496,24 @@ namespace AdminLTE_MVC.Controllers
                 }
                 var forfait = db.Forfaits.FirstOrDefault(f => f.ID == abonnement.ForfaitId);
                 var client = db.Clients.FirstOrDefault(c => c.ID == abonnement.ClientID);
-                var ab = db.Abonnements.Find(abonnement.ID);
-                ab.Montant = forfait.Montant;
-                ab.Client = client;
-                ab.ClientID = client.ID;
-                ab.Forfait = forfait;
-                ab.ForfaitId = forfait.ID;
-                ab.DateCreation = DateTime.Now;
-                ab.MailSent = false;
-                ab.NbJours = forfait.Duree;
-                ab.NbJoursRestants = forfait.Duree;
+                var dbAboEdit = db.Abonnements.Find(abonnement.ID);
+                dbAboEdit.Montant = forfait.Montant;
+                dbAboEdit.Client = client;
+                dbAboEdit.ClientID = client.ID;
+                dbAboEdit.Forfait = forfait;
+                dbAboEdit.ForfaitId = forfait.ID;
+                dbAboEdit.DateCreation = DateTime.Now;
+                dbAboEdit.MailSent = false;
+                dbAboEdit.NbJours = forfait.Duree;
+                dbAboEdit.NbJoursRestants = forfait.Duree;
                 //ab.Approved = false;
-                ab.Renewal = false;
-                ab.Suspendu = false;
+                dbAboEdit.Renewal = false;
+                dbAboEdit.Suspendu = false;
                 //ab.ApproverUID = User.Identity.GetUserId();
-                ab.DateDecompte = DateTime.Now;
-                ab.DateDebut = abonnement.DateDebut;
-                ab.DateFin = DateTime.Now.AddDays(forfait.Duree);
+                dbAboEdit.DateDecompte = DateTime.Now;
+                dbAboEdit.DateDebut = abonnement.DateDebut;
+                dbAboEdit.DateFin = abonnement.DateDebut.AddDays(forfait.Duree);
+                dbAboEdit.NbJoursRestants = (int)(dbAboEdit.DateFin - DateTime.Now).TotalDays + 1;
                 //db.Abonnements.Add(abonnement);
                 db.SaveChanges();
                 //db.Entry(abonnement).State = EntityState.Modified;
@@ -637,6 +652,8 @@ namespace AdminLTE_MVC.Controllers
             {
                 abonnement.DateDebut = date.Value;
                 abonnement.LastCheckDate = date.Value;
+                abonnement.DateFin = abonnement.DateDebut.AddDays(abonnement.Forfait.Duree);
+                abonnement.NbJoursRestants = (int)(abonnement.DateFin - DateTime.Now).TotalDays + 1;
             }
             db.SaveChanges();
 
