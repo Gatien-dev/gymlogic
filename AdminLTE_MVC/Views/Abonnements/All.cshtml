@@ -1,0 +1,176 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Abonnement>
+
+@using IdentitySample.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@{
+    ViewBag.Title = "Gestion des abonnements";
+    var db = new ApplicationDbContext();
+}
+
+
+<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouvel Abonnement
+</a>
+
+<br />
+<br />
+<br />
+<div class="table-responsive">
+    <table class="table table-bordered table-striped " id="myDataTable">
+        <thead>
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.ID)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Forfait.Description)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.UserID)
+                    </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Montant)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateDebut)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NbJours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NbJoursRestants)
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.Suspendu)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Approved)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Renewal)
+                    </th>*@
+                <th>
+                    Date de fin
+                </th>
+                @*<th>
+                        @Html.DisplayNameFor(model => model.ApproverUID)
+                    </th>*@
+                <th>
+                    Avance
+                </th>
+                <th>Etat</th>
+                <th></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                string datefin = DateTime.Now.AddDays(item.NbJoursRestants).ToShortDateString();
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Nom) @item.Client.Prenom
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forfait.Description)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.UserID)
+        </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Montant)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreation)
+                </td>
+                <td>
+                    @if (item.Activé)
+                    {
+                        @Html.DisplayFor(modelItem => item.DateDebut)
+                    }
+                    else
+                    {
+                        @("--");
+                    }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NbJours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NbJoursRestants)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Suspendu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Renewal)
+        </td>*@
+                <td>
+                    @item.DateFin
+                </td>
+                <td>
+                    @if (item.ResteAPayer > 0)
+                    {
+                        @("Non soldé")
+                    }
+                    else
+                    {
+                        @("Soldé");
+                    }
+                </td>
+                <td>
+                    @*<a href="#" title="" class="btn btn-xs btn-default disabled">
+                <span class="fa fa-recycle"> </span>
+            </a>*@
+
+                    @if (item.Approved)
+                    {<a href="#" title="Validé par @db.Users.Find(item.ApproverUID).Nom @db.Users.Find(item.ApproverUID).Prenoms" class="btn btn-xs btn-success ">
+                            <span class="fa fa-check"> </span>
+                        </a>
+                    }
+                    else
+                    {<a href="@Url.Action("Valider", new { id = item.ID })" title="Non Validé" class="btn btn-xs btn-danger ">
+                            <span class="fa fa-remove"> </span>
+                        </a>
+                    }
+                    @if (item.Suspendu)
+                    {<a href="#" title="@item.NbJoursRestants Jours restants" class="btn btn-xs btn-warning">
+                            <span class="fa fa-pause"> </span>
+                        </a>
+                    }
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.ApproverUID)
+        </td>*@
+                <td>
+
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

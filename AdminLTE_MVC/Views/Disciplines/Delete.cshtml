@@ -1,0 +1,67 @@
+﻿@model Gymlogic.Models.Data.Discipline
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="col-md-4 col-md-offset-2">
+    <h4 class="box-title text-bold">Informations générales de la discipline</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.Display(Model.Name)
+        </dd>
+
+        <dt>
+            <label>Titulaire</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titulaire.Nom)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Disciplines", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color col-md-12 text-cente">
+            @*<input type="submit" value="Supprimer" class="btn btn-danger" />*@
+            <textarea name="deleteMessage" id="deleteMessage" class="form-control" placeholder="Motif de la suprression" required="true"></textarea>
+            @* |<a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-stop-circle"> </span> Annuler</a>*@
+        </div>
+    }
+</div>
+@*<div class="col-md-6">
+        <h4 class="box-title text-bold">Abonnements en cours</h4>
+        @if (Model.Abonnements.Any())
+        {
+            foreach (var abonnement in Model.Abonnements)
+            {
+                <p>Abonnement @(abonnement.Etat ? "en cours" : "suspendu") a @abonnement.Discipline.Name: @abonnement.NbJoursRestants jours restants sur @abonnement.NbJours</p>
+            }
+        }
+        else
+        {
+            <small class="info"> <span class="text-danger">Aucun abonnement</span> enregistré pour cette discipline.</small>
+
+        }
+    </div>*@
+<div class="col-md-12 text-danger text-center">
+    <h3>
+        <span class="fa fa-warning"></span>
+        La suppression est irréversible
+    </h3>
+</div>
+<div class="col-md-12 text-center ">
+    <button type="submit" form="form" class="btn btn-danger">
+        <span class="fa fa-trash"></span>
+        Supprimer
+    </button>
+    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = Model.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>

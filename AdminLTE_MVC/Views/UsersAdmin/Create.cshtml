@@ -1,0 +1,96 @@
+﻿@model IdentitySample.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Gestion des utilisateurs - Ajouter un utilisateur";
+}
+
+
+@using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+<div class="col-md-8">
+    @Html.ValidationSummary("", new { @class = "text-error" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nom, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Nom, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Prenom, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Prenom, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Adresse, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Adresse, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Telephone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            Droits d'accès
+        </label>
+        <div class="col-md-10">
+            @foreach (var item in (SelectList)ViewBag.RoleId)
+            {
+                <input type="checkbox" name="SelectedRoles" value="@item.Value" class="checkbox-inline" />
+                @Html.Label(item.Value, new { @class = "control-label" })
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Photo, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+
+            <input type="file" name="Photo" id="fileUpload" accept=".png,.jpg,.jpeg,.gif,.tif" />
+
+        </div>
+    </div>
+
+
+</div>
+    <div class="col-md-4 jumbotron">
+        <h5 class="box-title text-bold">Infos Complémentaires</h5>
+        <small class="info">Les champs marqués d'un <span class="text-danger">*</span>  sont obligatoires</small>
+    </div>
+
+}
+<div class="col-md-8 text-center">
+    <button type="submit" form="form" class="btn btn-primary">
+        <span class="fa fa-save"></span>
+        Enregistrer
+    </button>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

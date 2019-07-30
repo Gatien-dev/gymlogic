@@ -1,0 +1,76 @@
+﻿@model IEnumerable<AdminLTE_MVC.Models.ActivityLog>
+
+@{
+    ViewBag.Title = "Index";
+}
+@using IdentitySample.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@{
+    ViewBag.Title = "Gestion des abonnements";
+    var db = new ApplicationDbContext();
+}
+
+
+@*<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouvel Abonnement
+</a>*@
+
+<br />
+<br />
+<br />
+<table class="table table-bordered table-striped table-responsive" id="myDataTable">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.UserEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LogMessage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityType)
+            </th>
+            <th>Etat</th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogMessage)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.UserID)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityType)
+                </td>
+                <td>
+
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

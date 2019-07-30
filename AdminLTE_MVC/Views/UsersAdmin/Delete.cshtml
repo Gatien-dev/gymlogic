@@ -1,0 +1,100 @@
+﻿@model IdentitySample.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+
+<div class="col-md-4 col-md-offset-2">
+    <h4 class="box-title text-bold">Informations générales de l'utilisateur</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prenoms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Prenoms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Adresse)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Adresse)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "UsersAdmin", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color col-md-12 text-cente">
+            @*<input type="submit" value="Supprimer" class="btn btn-danger" />*@
+
+            @* |<a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-stop-circle"> </span> Annuler</a>*@
+        </div>
+    }
+</div>
+<div class="col-md-6">
+    <h4 class="box-title text-bold">Droits d'accès de cet utilisateur</h4>
+    @if (ViewBag.RoleNames.Count == 0)
+    {
+        <hr />
+        <small class="info"> <span class="text-danger">Aucun droit d'accès</span> enregistré au nom de ce client.</small>
+
+    }
+
+    <table class="table">
+
+        @foreach (var item in ViewBag.RoleNames)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="col-md-12 text-danger text-center">
+    <h3>
+        <span class="fa fa-warning"></span>
+        La suppression est irréversible
+    </h3>
+</div>
+<div class="col-md-12 text-center ">
+    <button type="submit" form="form" class="btn btn-danger">
+        <span class="fa fa-trash"></span>
+        Supprimer
+    </button>
+    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = Model.Id })"><span class="fa fa-edit"> </span> Modifier</a>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>

@@ -1,0 +1,99 @@
+﻿@model IdentitySample.Models.EditUserViewModel
+
+@{
+    ViewBag.Title = "GymLogic-Modification";
+}
+@*@using (Html.BeginForm("Edit", "UsersAdmin", new { id = Model.Id }, FormMethod.Post, new { id = "form" }))*@
+
+@using (Html.BeginForm("Edit", "UsersAdmin", FormMethod.Post, htmlAttributes: new { @enctype = "multipart/form-data", id="form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal col-md-8">
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-error" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nom, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Nom, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Prenom, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Prenom, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Adresse, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Adresse, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Telephone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="selectAll"class="col-md-2 control-label">Cocher Tout</label>
+        <div class="col-md-10">
+            <input type="checkbox" id="select-all" class="checkbox"  />
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @Html.Label("Roles", new { @class = "control-label col-md-2" })
+        <div class=" col-md-10">
+            <div class="row">
+
+                @foreach (var item in Model.RolesList)
+                {
+                    <div class="col-md-4">
+                        <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline role" />
+                        @Html.Label(item.Value, new { @class = "control-label" })
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>*@
+</div>
+}
+<div class="col-md-4 jumbotron">
+    <h5 class="box-title text-bold">Infos Complémentaires</h5>
+    <small class="info">Les champs marqués d'un <span class="text-danger">*</span>  sont obligatoires</small>
+</div>
+
+
+<div class="col-md-8 text-center">
+    <button type="submit" form="form" class="btn btn-primary">
+        <span class="fa fa-save"></span>
+        Enregistrer
+    </button>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left "> </span> Retour</a>
+</div>
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Client>
+
+@{
+    ViewBag.Title = "Gestion des clients-Index";
+}
+
+
+<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouveau Client
+</a>
+
+<br />
+<br />
+<br />
+<table class="table table-bordered table-striped table-responsive" id="myDataTable">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexe)
+            </th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prenom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adresse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sexe)
+                </td>
+                <td>
+                    @if (item.Nouveau)
+                    {
+                        <span class="fa fa-star text-warning "></span>
+                    }
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

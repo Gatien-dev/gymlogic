@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Forfait>
+
+@{
+    ViewBag.Title = "Gestion des Forfaits";
+}
+
+
+<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouveau Forfait
+</a>
+
+<br />
+<br />
+<br />
+<table class="table table-bordered table-striped table-responsive" id="myDataTable">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Discipline.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duree)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Montant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discipline.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duree)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Montant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+
+            <td>
+                <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

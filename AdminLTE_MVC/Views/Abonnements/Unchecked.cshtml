@@ -1,0 +1,209 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Abonnement>
+
+@using IdentitySample.Models;
+@{
+    ViewBag.Title = "Abonnements non Validés";
+    var listeAValider = ViewBag.listeAValider as List<Gymlogic.Models.Data.Abonnement>;
+    List<ApplicationUser> users = ViewBag.users;
+}
+
+
+@{
+    ViewBag.Title = "Gestion des abonnements non Comptabilisés";
+    var db = new ApplicationDbContext();
+}
+
+<br />
+<div class="col-md-12 bg-gray text-right small">
+    @using (Html.BeginForm("ApplyDates", "Abonnements", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-9">
+
+            <div class="col-md-3">
+                <label for="dateDebut" class="control-label">Début</label>
+                <input type="date" name="dateDebut" id="dateDebut" class="" value="@((Session["dateDebut"]))" />
+            </div>
+            <div class="col-md-3">
+                <label for="dateFin" class="control-label">Fin</label>
+                <input type="date" name="dateFin" id="dateFin" class="" value="@Session["dateFin"]" />
+            </div>
+            @*<div class="col-md-2"><a href="@Url.Action(" ApplyDates")" class="btn btn-success "><span class="fa fa-search"></span> Appliquer</a></div>*@
+            <div class="col-md-3">
+                <button type="submit" form="form" class="btn btn-primary btn-sm">
+                    <span class="fa fa-search"></span> Filtrer
+                </button>
+                <a href="@Url.Action("ResetFilters")" class="btn btn-primary btn-sm "><span class="fa fa-remove"></span> Annuler</a>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-3">
+            <a href="@Url.Action(" ValiderSelection")" class="btn btn-success  btn-sm"><span class="fa fa-check"></span> Comptabiliser</a>
+            <a href="javascript:window.print()" class="btn btn-default btn-sm "><span class="fa fa-print"></span> Imprimer</a>
+        </div>
+    }
+
+
+</div>    
+<div class="col-md-12"><label>Période:  @((Session["dateDebut"])) @("-") @((Session["dateFin"]))</label></div>
+<hr />
+
+<div class="table-responsive col-md-6 small" style="max-height:800px;">
+    <table class="table table-bordered table-striped " id="my_data_table_scroll1" title="Abonnements Non Validés">
+
+        <thead>
+
+            <tr>
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.DateCreation)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Forfait.Description)
+                </th>
+
+                <th>
+                    Periode
+                </th>
+                <th>Agent</th>
+                <th class="no-print"></th>
+                <th></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                
+                var user = @users.FirstOrDefault(u => u.Id == item.UserID);
+                <tr>
+                    <td class="no-print">
+                        @Html.DisplayFor(modelItem => item.DateCreation)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Client.Nom) @item.Client.Prenom
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Forfait.Description)
+                    </td>
+
+                    <td>
+                        @if (item.Activé)
+                        {
+                            @Html.DisplayFor(modelItem => item.DateDebut) <span>=> </span>@item.DateFin
+                        }
+                        else
+                        {
+                            @("--");
+                        }
+                    </td>
+                    <td>
+                        @if (user == null)
+                        {
+                            @("--")
+                        }
+                        else
+                        {
+                            @(user.UserName);
+                        }
+                    </td>
+                    <td class="text-center no-print">
+                        <a href="@Url.Action("AddToValider", new { id = item.ID })" title="Ajouter pour valider" class="btn btn-xs btn-default ">
+                            <span class="fa fa-chevron-right"> </span>
+                        </a>
+
+                    </td>
+                    <td class="text-nowrap">
+                        @*<a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span></a>*@
+                        <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span></a>
+                        <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-trash"> </span></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*<hr />*@
+<div class="col-md-6 small table-responsive">
+    <table id="my_data_table_scroll" title="Abonnements Selectionnés pour validation">
+        <thead>
+
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreation)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Forfait.Description)
+                </th>
+
+                <th>
+                    Periode
+                </th>
+
+                <th class="no-print"></th>
+                <th></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in listeAValider)
+            {
+                
+                <tr>
+
+                    <td class="no-print">
+                        @Html.DisplayFor(modelItem => item.DateCreation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Client.Nom) @item.Client.Prenom
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Forfait.Description)
+                    </td>
+
+                    <td>
+                        @if (item.Activé)
+                        {
+                            @Html.DisplayFor(modelItem => item.DateDebut) @(" => ") @item.DateFin
+                        }
+                        else
+                        {
+                            @("--");
+                        }
+                    </td>
+
+
+                    <td class="no-print">
+                        <a href="@Url.Action("RemoveFromValider", new { id=item.ID })" title="Ne pas valider" class="btn btn-xs btn-default ">
+                            <span class="fa fa-chevron-left"> </span>
+                        </a>
+
+
+                    <td class="no-print">
+
+                        <a class="btn btn-xs btn-primary" href="@Url.Action(" Edit", new { id=item.ID })"><span class="fa fa-edit"> </span></a>
+                        <a class="btn btn-xs btn-default" href="@Url.Action(" Details", new { id=item.ID })"><span class="fa fa-eye"> </span></a>
+                        <a class="btn btn-xs btn-danger" href="@Url.Action(" Delete", new { id=item.ID })"><span class="fa fa-remove"> </span></a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+
+</div>

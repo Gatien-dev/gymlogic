@@ -1,0 +1,103 @@
+﻿
+@model Gymlogic.Models.Data.Forfait
+@using Gymlogic.Models.Data;
+@{
+    ViewBag.Title = "Modification du Client";
+    List<Abonnement> abonnements = ViewBag.Abonnements;
+    int abonnementsCount = ViewBag.AbonnementsCount;
+}
+
+
+@using (Html.BeginForm("Edit", "Forfaits", new { id = Model.ID }, FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal col-md-8">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisciplineID, "Discipline", htmlAttributes: new { @class = "control-label col-md-2", disabled = "disabled" })
+            @if (abonnementsCount > 0)
+            {
+                <div class="col-md-10">
+                    @Html.DropDownList("DisciplineID", null, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.DisciplineID, "", new { @class = "text-danger" })
+                </div>
+            }
+            else
+            {
+                <div class="col-md-10">
+                    @Html.DropDownList("DisciplineID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.DisciplineID, "", new { @class = "text-danger" })
+                </div>
+            }
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duree, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Duree, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Duree, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Montant, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Montant, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Montant, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                </div>
+            </div>*@
+    </div>
+    <div class="col-md-4 jumbotron">
+        <h5 class="box-title text-bold">Infos Complémentaires</h5>
+        <small class="info">Les champs marqués d'un <span class="text-danger">*</span>  sont obligatoires</small><br />
+        @if (abonnementsCount > 0)
+        {
+
+            <small class="info"><span class="text-danger">Ce forfait est actuellement utilisé par @abonnementsCount Abonnements</span></small>
+        }
+        else
+        { <small class="info">Ce forfait n'est actuellement pas utilisé pour des abonnements.</small>
+        }
+    </div>
+}
+
+<div class="col-md-8 text-center">
+    <button type="@if (abonnementsCount<=0)
+	{
+		 @("submit")
+	}" form="@if (abonnementsCount<=0)
+	{
+		 @("form")
+	}" class="btn btn-primary @if (abonnementsCount>0)
+	{
+		 @("disabled")
+	}">
+        <span class="fa fa-save"></span>
+        Enregistrer
+    </button>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,160 @@
+﻿@model Gymlogic.Models.Data.Abonnement
+@using IdentitySample.Models;
+@using Gymlogic.Models.Data;
+
+@{
+    ViewBag.Title = "Supprimer";
+    ApplicationUser user = ViewBag.agentSaisie;
+    ApplicationUser validateur = ViewBag.agentValidation;
+    List<Abonnement> otherAbo = ViewBag.otherAbo;
+}
+
+<div class="col-md-4 col-md-offset-2">
+    <h4 class="box-title text-bold">Informations générales d'abonnement</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Forfait.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Forfait.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Agent de Saisie")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => user.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Montant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Montant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDebut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateDebut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NbJours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NbJours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NbJoursRestants)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NbJoursRestants)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Suspendu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Suspendu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Approved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Approved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Renewal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Renewal)
+        </dd>
+
+        @*<dt>
+            @Html.DisplayNameFor(model => model.DateRenouvellement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRenouvellement)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayName("Validé par: ")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => validateur.Email)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm("Delete", "abonnements", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model=>model.ID)
+        <div class="form-actions no-color col-md-12 text-cente">
+            @*<input type="submit" value="Supprimer" class="btn btn-danger" />*@
+            <textarea name="deleteMessage" id="deleteMessage" class="form-control" placeholder="Motif de la suprression" required="required"></textarea>
+            @* |<a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-stop-circle"> </span> Annuler</a>*@
+        </div>
+    }
+</div>
+<div class="col-md-6">
+    <h4 class="box-title text-bold">Abonnements en cours</h4>
+    @if (otherAbo != null)
+    {
+        foreach (var abonnement in otherAbo)
+        {
+            <p>Abonnement @(!abonnement.Suspendu ? "en cours" : "suspendu") a @abonnement.Forfait.Discipline.Name : @abonnement.NbJoursRestants jours restants sur @abonnement.NbJours</p>
+        }
+    }
+    else
+    {
+        <small class="info"> <span class="text-danger">Aucun abonnement</span> enregistré au nom de ce client.</small>
+
+    }
+</div>
+<div class="col-md-12 text-danger text-center">
+    <h3>
+        <span class="fa fa-warning"></span>
+        La suppression est irréversible
+    </h3>
+</div>
+<div class="col-md-12 text-center ">
+    <button type="submit" form="form" class="btn btn-danger">
+        <span class="fa fa-trash"></span>
+        Supprimer
+    </button>
+    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = Model.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>

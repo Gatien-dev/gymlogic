@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Discipline>
+
+
+@{
+    ViewBag.Title = "Gestion des disciplines";
+}
+
+
+<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouvelle discipline
+</a>
+
+<br />
+<br />
+<br />
+<table class="table table-bordered table-striped table-responsive" id="myDataTable">
+    <thead>
+
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                <label>Titulaire</label>
+            </th>
+            
+            <th></th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulaire.Nom) | 
+                    <a href="mailto:@item.Titulaire.Email">
+                        @Html.DisplayFor(modelItem => item.Titulaire.UserName)
+                    </a>
+                </td>
+            
+                <td>
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

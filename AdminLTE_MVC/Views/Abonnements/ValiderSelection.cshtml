@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Valider l'abonnement"; }
+<div class="col-md-6 col-md-offset-3">
+
+    <h4 class="box-title text-bold">Voulez vous vraiment comptabiliser ces @ViewBag.count Abonnements?</h4>
+
+    @using (Html.BeginForm("ValiderSelection", "Abonnements", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color col-md-12 text-cente">
+            <input type="submit" value="OUI, Comptabiliser les abonnements." class="btn btn-success" /> | <a href="@Url.Action("Unchecked")">NON, revérifier</a>"
+
+            @* |<a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-stop-circle"> </span> Annuler</a>*@
+        </div>
+    }
+</div>
+
+

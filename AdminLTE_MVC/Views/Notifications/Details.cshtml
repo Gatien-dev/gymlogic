@@ -1,0 +1,66 @@
+﻿@model Gymlogic.Models.Data.Notification
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Notification</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Titre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Contenu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Contenu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Archived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Archived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tag)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

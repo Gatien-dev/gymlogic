@@ -1,0 +1,46 @@
+﻿@model Gymlogic.Models.Data.Discipline
+
+@{
+    ViewBag.Title = "Nouvelle Discipline";
+}
+
+
+
+
+
+@using (Html.BeginForm("Create", "Disciplines", FormMethod.Post, new { id = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal col-md-8">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TitulaireID, "Titulaire", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("TitulaireID", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.TitulaireID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+    <div class="col-md-4 jumbotron">
+        <h5 class="box-title text-bold">Infos Complémentaires</h5>
+        <small class="info">Les champs marqués d'un <span class="text-danger">*</span>  sont obligatoires</small>
+    </div>
+}
+
+<div class="col-md-8 text-center">
+    <button type="submit" form="form" class="btn btn-primary">
+        <span class="fa fa-save"></span>
+        Enregistrer
+    </button>
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left "> </span> Retour</a>
+</div>

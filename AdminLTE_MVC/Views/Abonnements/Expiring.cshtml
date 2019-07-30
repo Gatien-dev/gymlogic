@@ -1,0 +1,184 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.Abonnement>
+
+@using IdentitySample.Models;
+@{
+    ViewBag.Title = "Abonnements presque terminés";
+}
+
+
+@{
+    ViewBag.Title = "Gestion des abonnements";
+    var db = new ApplicationDbContext();
+}
+<h3>
+    Abonnements presque Terminés
+    <small>Liste des abonnements presque terminés</small>
+</h3>
+
+<a href="@Url.Action("Create")" class="btn btn-primary no-print ">
+    <span class="fa fa-plus"></span> Nouvel Abonnement
+</a>
+
+<a href="javascript:window.print()" class="btn btn-primary no-print"><span class="fa fa-print"></span> Cliquez pour imprimer</a>
+<br />
+<br />
+<br />
+<div >
+    <table class="table table-bordered table-striped " id="my_data_table_no_page">
+        <thead>
+
+            <tr>
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.Client.ID)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.Nom)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Client.Telephone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Forfait.Description)
+                </th>
+                @*<th>
+            @Html.DisplayNameFor(model => model.UserID)
+        </th>*@
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.Montant)
+                </th>
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.DateCreation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateDebut)
+                </th>
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.NbJours)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NbJoursRestants)
+                </th>
+                @*<th> Date de fin</th>*@
+                @*<th>
+            @Html.DisplayNameFor(model => model.Suspendu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Approved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Renewal)
+        </th>*@
+                <th class="no-print">
+                    @Html.DisplayNameFor(model => model.DateFin)
+                </th>
+                @*<th>
+            @Html.DisplayNameFor(model => model.ApproverUID)
+        </th>*@
+                <th class="no-print">Etat</th>
+                <th class="no-print">
+                    Avance
+                </th>
+                <th class="no-print"></th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+               
+            <tr>
+                <td class="no-print">
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Nom) @item.Client.Prenom
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Telephone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forfait.Description)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.UserID)
+        </td>*@
+                <td class="no-print">
+                    @Html.DisplayFor(modelItem => item.Montant)
+                </td>
+                <td class="no-print">
+                    @Html.DisplayFor(modelItem => item.DateCreation)
+                </td>
+                <td>
+                    @if (item.Activé)
+                    {
+                        @Html.DisplayFor(modelItem => item.DateDebut)
+                    }
+                    else
+                    {
+                        @("--");
+                    }
+
+                </td>
+                <td class="no-print">
+                    @Html.DisplayFor(modelItem => item.NbJours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NbJoursRestants)
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => @item.DateFin)
+        </td>*@
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Renewal)
+        </td>*@
+                <td class="no-print">
+                    @Html.DisplayFor(modelItem => item.DateFin)
+                </td>
+                <td class="no-print">
+
+                    @if (item.Approved)
+                    {<a href="#" title="Validé par @db.Users.Find(item.ApproverUID).Nom @db.Users.Find(item.ApproverUID).Prenoms" class="btn btn-xs btn-success ">
+                            <span class="fa fa-check"> </span>
+                        </a>
+                    }
+                    else
+                    {<a href="@Url.Action("Valider", new { id = item.ID })" title="Non Validé" class="btn btn-xs btn-danger ">
+                            <span class="fa fa-remove"> </span>
+                        </a>
+                    }
+                    @if (item.Suspendu)
+                    {<a href="#" title="@item.NbJoursRestants Jours restants" class="btn btn-xs btn-warning">
+                            <span class="fa fa-pause"> </span>
+                        </a>
+                    }
+                </td>
+                <td class="no-print">
+                    @if (item.ResteAPayer > 0)
+                    {
+                        @("Non soldé")
+                    }
+                    else
+                    {
+                        @("Soldé");
+                    }
+                </td>
+                @*<td>
+            @Html.DisplayFor(modelItem => item.ApproverUID)
+        </td>*@
+                <td class="no-print">
+
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.ID })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.ID })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.ID })"><span class="fa fa-remove"> </span> Supprimer</a>
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

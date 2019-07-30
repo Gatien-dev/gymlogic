@@ -1,0 +1,188 @@
+﻿@model Gymlogic.Models.Data.Abonnement
+@using IdentitySample.Models;
+
+
+
+@{
+    ViewBag.Title = "Payer";
+    var approver = (ApplicationUser)ViewBag.approver;
+    var db = new ApplicationDbContext();
+    var agent = db.Users.Find(Model.UserID);
+}
+
+
+<div class="col-md-4 col-md-offset-2">
+    <h4 class="box-title text-bold">Informations générales d'abonnement</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Client")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Forfait.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Forfait.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Agent de saisie")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => agent.Nom) @Html.DisplayFor(model => agent.Prenoms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Montant)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Montant)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDebut)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateDebut)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NbJours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NbJours)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NbJoursRestants)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NbJoursRestants)
+        </dd>
+        <dt>
+            Montant payé
+        </dt>
+
+        <dd>
+            @(Model.Montant - Model.ResteAPayer)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ResteAPayer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResteAPayer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Suspendu)
+        </dt>
+
+        <dd>
+            @if (Model.Suspendu)
+            {
+                @("Oui")
+            }
+            else
+            {
+                @("Non")
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Approved)
+        </dt>
+
+        <dd>
+            @if (Model.Approved)
+            {
+                @("Oui")
+            }
+            else
+            {
+                @("Non")
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Renewal)
+        </dt>
+
+        <dd>
+            @if (Model.Renewal)
+            {
+                @("Oui")
+            }
+            else
+            {
+                @("Non")
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateFin)
+        </dd>
+
+        <dt>
+            @Html.Label("Validé par: ")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => approver.Nom)
+            @Html.DisplayFor(model => approver.Prenoms)
+        </dd>
+
+    </dl>
+    @using (Html.BeginForm("Payer", "Abonnements", FormMethod.Post, new { id = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ID)
+        <div class="form-group">
+            <label for="montant" class="control-label col-md-2">Montant</label>
+            <input type="number" name="montant" id="montant" class="form-control"/>
+        </div>
+    }
+</div>
+<div class="col-md-6">
+    <h4 class="box-title text-bold">Abonnements en cours pour ce client</h4>
+    @if (Model.Client.Abonnements.Any())
+    {
+        foreach (var abonnement in Model.Client.Abonnements)
+        {
+            <p>Abonnement @(abonnement.Suspendu ? "suspendu" : "en cours") a @abonnement.Forfait.Discipline.Name : @abonnement.NbJoursRestants jours restants sur @abonnement.NbJours</p>
+        }
+    }
+    else
+    {
+        <small class="info"> <span class="text-danger">Aucun abonnement</span> enregistré au nom de ce client.</small>
+
+    }
+</div>
+<div class="col-md-12 text-center">
+
+    @*<a class="btn btn-success" href="@Url.Action("Valider", new { id = Model.ID })"><span class="fa fa-check"> </span> Valider</a>*@
+    <input type="submit" value="Payer" class="btn btn-success" form="form" />
+    <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
+</div>

@@ -1,0 +1,70 @@
+﻿@model IEnumerable<IdentitySample.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Gestion des Comptes Utilisateur-Index";
+}
+<a href="@Url.Action("Create")" class="btn btn-primary ">
+    <span class="fa fa-plus"></span> Nouveau compte utilisateur
+</a>
+<br /><br /><br />
+
+<table class="table table-bordered table-striped table-responsive" id="myDataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prenoms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adresse)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prenoms)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telephone)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adresse)
+                </td>
+                <td>
+                    <a class="btn btn-xs btn-primary" href="@Url.Action("Edit", new { id = item.Id })"><span class="fa fa-edit"> </span> Modifier</a>
+                    <a class="btn btn-xs btn-default" href="@Url.Action("Details", new { id = item.Id })"><span class="fa fa-eye"> </span> Details</a>
+                    <a class="btn btn-xs btn-danger" href="@Url.Action("Delete", new { id = item.Id })"><span class="fa fa-remove"> </span> Supprimer</a>
+                </td>
+                @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>*@
+            </tr>
+        }
+    </tbody>
+
+
+</table>
