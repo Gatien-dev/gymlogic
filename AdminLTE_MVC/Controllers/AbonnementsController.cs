@@ -36,7 +36,7 @@ namespace AdminLTE_MVC.Controllers
 
             int abonnementAlertDays = Int32.Parse(WebConfigurationManager.AppSettings["AbonnementAlertDays"]);
             var twoDaysBeforeNow = DateTime.Now.AddDays(-2);
-            var abonnements = db.Abonnements.Where(a => a.NbJoursRestants > 0 && a.NbJoursRestants <= abonnementAlertDays);
+            var abonnements = db.Abonnements.Include(a => a.Forfait).Where(a => a.NbJoursRestants > 0 && a.NbJoursRestants <= abonnementAlertDays);
             ViewBag.glyphicon = "fa fa-time";
             ViewBag.controller = "Abonnements";
             ViewBag.action = "Abonnements presque Terminés";
@@ -208,6 +208,15 @@ namespace AdminLTE_MVC.Controllers
                     var abonnement = db.Abonnements.FirstOrDefault(a => a.ID == abo.ID);
                     abonnement.Approved = true;
                     abonnement.ApproverUID = User.Identity.GetUserId();
+                    if (abonnement.History == null) abonnement.History = new List<History>();
+                    abonnement.History.Add(new History()
+                    {
+                        UserId = abonnement.UserID,
+                        Abonnement = abonnement,
+                        Action = "Validation de l'abonnement",
+                        Date = DateTime.Now,
+                        AbonnementID = abonnement.ID
+                    });
                 }
                 db.SaveChanges();
             }
@@ -297,6 +306,16 @@ namespace AdminLTE_MVC.Controllers
             abonnement.Approved = true;
             abonnement.ApproverUID = User.Identity.GetUserId();
             db.SaveChanges();
+            if (abonnement.History == null) abonnement.History = new List<History>();
+            abonnement.History.Add(new History()
+            {
+                UserId = abonnement.UserID,
+                Abonnement = abonnement,
+                Action = "Validation de l'abonnement",
+                Date = DateTime.Now,
+                AbonnementID = abonnement.ID
+            });
+            db.SaveChanges();
             Session["ListeAValider"] = null;
             Session["listeNonValidee"] = null;
             return RedirectToAction("Unchecked");
@@ -339,6 +358,16 @@ namespace AdminLTE_MVC.Controllers
             }
             abonnement.Suspendu = true;
 
+            db.SaveChanges();
+            if (abonnement.History == null) abonnement.History = new List<History>();
+            abonnement.History.Add(new History()
+            {
+                UserId = abonnement.UserID,
+                Abonnement = abonnement,
+                Action = "Suspension de l'abonnement",
+                Date = DateTime.Now,
+                AbonnementID = abonnement.ID
+            });
             db.SaveChanges();
             return RedirectToAction("all");
         }
@@ -423,9 +452,19 @@ namespace AdminLTE_MVC.Controllers
                 abo.DateDecompte = DateTime.Now;
                 abo.LastCheckDate = DateTime.Now;
                 abo.Activé = abonnement.Activé;
+
                 db.Abonnements.Add(abo);
                 db.SaveChanges();
-
+                if (abo.History == null) abo.History = new List<History>();
+                abo.History.Add(new History()
+                {
+                    UserId = abo.UserID,
+                    Abonnement = abo,
+                    Action = "Creation de l'abonnement",
+                    Date = DateTime.Now,
+                    AbonnementID = abo.ID
+                });
+                db.SaveChanges();
                 db.Notifications.Add(new Notification()
                 {
                     User = db.Users.Find(User.Identity.GetUserId()),
@@ -518,7 +557,16 @@ namespace AdminLTE_MVC.Controllers
                 db.SaveChanges();
                 //db.Entry(abonnement).State = EntityState.Modified;
                 //db.SaveChanges();
-
+                if (dbAboEdit.History == null) dbAboEdit.History = new List<History>();
+                dbAboEdit.History.Add(new History()
+                {
+                    UserId = dbAboEdit.UserID,
+                    Abonnement = dbAboEdit,
+                    Action = "Modification de l'abonnement",
+                    Date = DateTime.Now,
+                    AbonnementID = dbAboEdit.ID
+                });
+                db.SaveChanges();
                 Session["ListeAValider"] = null;
                 Session["listeNonValidee"] = null;
                 return RedirectToAction("all");
@@ -635,7 +683,16 @@ namespace AdminLTE_MVC.Controllers
                 abonnement.ResteAPayer = 0;
             }
             db.SaveChanges();
-
+            if (abonnement.History == null) abonnement.History = new List<History>();
+            abonnement.History.Add(new History()
+            {
+                UserId = abonnement.UserID,
+                Abonnement = abonnement,
+                Action = "Paiement de l'abonnement: Somme versee: " + montant,
+                Date = DateTime.Now,
+                AbonnementID = abonnement.ID
+            });
+            db.SaveChanges();
 
             Session["ListeAValider"] = null;
             Session["listeNonValidee"] = null;
@@ -656,7 +713,16 @@ namespace AdminLTE_MVC.Controllers
                 abonnement.NbJoursRestants = (int)(abonnement.DateFin - DateTime.Now).TotalDays + 1;
             }
             db.SaveChanges();
-
+            if (abonnement.History == null) abonnement.History = new List<History>();
+            abonnement.History.Add(new History()
+            {
+                UserId = abonnement.UserID,
+                Abonnement = abonnement,
+                Action = "Activation de l'abonnement",
+                Date = DateTime.Now,
+                AbonnementID = abonnement.ID
+            });
+            db.SaveChanges();
             Session["ListeAValider"] = null;
             Session["listeNonValidee"] = null;
             return RedirectToAction("all");
@@ -678,12 +744,21 @@ namespace AdminLTE_MVC.Controllers
                 }
                 abonnement.DateFin = date.Value.AddDays(abonnement.NbJoursRestants);
                 var delta = DateTime.Now - date;
-                abonnement.NbJoursRestants -= (int)delta.Value.Days;
+                abonnement.NbJoursRestants -= delta.Value.Days;
                 Utilities.checkAbonnements();
             };
             abonnement.Suspendu = false; abonnement.MailSent = false;
             db.SaveChanges();
-
+            if (abonnement.History == null) abonnement.History = new List<History>();
+            abonnement.History.Add(new History()
+            {
+                UserId = abonnement.UserID,
+                Abonnement = abonnement,
+                Action = "Reprise de l'abonnement",
+                Date = DateTime.Now,
+                AbonnementID = abonnement.ID
+            });
+            db.SaveChanges();
             Session["ListeAValider"] = null;
             Session["listeNonValidee"] = null;
             return RedirectToAction("all");

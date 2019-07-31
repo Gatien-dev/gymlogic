@@ -214,6 +214,14 @@
     <Compile Include="Migrations\201907022027020_global.Designer.cs">
       <DependentUpon>201907022027020_global.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907311228059_AddAbonnementHistory.cs" />
+    <Compile Include="Migrations\201907311228059_AddAbonnementHistory.Designer.cs">
+      <DependentUpon>201907311228059_AddAbonnementHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907311234499_AddAbonnementHistory1.cs" />
+    <Compile Include="Migrations\201907311234499_AddAbonnementHistory1.Designer.cs">
+      <DependentUpon>201907311234499_AddAbonnementHistory1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityLog.cs" />
@@ -1454,6 +1462,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907022027020_global.resx">
       <DependentUpon>201907022027020_global.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907311228059_AddAbonnementHistory.resx">
+      <DependentUpon>201907311228059_AddAbonnementHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907311234499_AddAbonnementHistory1.resx">
+      <DependentUpon>201907311234499_AddAbonnementHistory1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

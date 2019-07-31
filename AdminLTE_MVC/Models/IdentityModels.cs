@@ -19,6 +19,7 @@ namespace IdentitySample.Models
         public string Nom { get; set; }
         public string Prenoms { get; set; }
         public List<Notification> Notifications { get; set; }
+        public List<History> History { get; set; }
         [Phone]
         public string Telephone { get; set; }
         public string Adresse { get; set; }

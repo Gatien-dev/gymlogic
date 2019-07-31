@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentitySample.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -57,5 +58,18 @@ namespace Gymlogic.Models.Data
         [Display(Name ="Date de fin")]
         public DateTime DateFin { get; set; }
         public bool Activé { get; set; }
+        public List<History> History { get; set; }
+
+    }
+    public class History
+    {
+        public int ID { get; set; }
+        public string Action { get; set; }
+        public DateTime Date { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        public Abonnement Abonnement { get; set; }
+        [ForeignKey("Abonnement")]
+        public int AbonnementID { get; set; }
     }
 }
