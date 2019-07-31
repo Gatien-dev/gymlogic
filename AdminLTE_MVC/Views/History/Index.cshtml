@@ -5,19 +5,12 @@
     Gymlogic.Models.Data.Abonnement abo = ViewBag.abonnement;
 }
 
-@if (abo == null)
+@if (abo != null)
 {
-    <h2>Historique des abonnements</h2>
-}
-else
-{
-    <h2>Historique de l'abonnement @abo.Forfait.Description du client @abo.Client.Nom @abo.Client.Prenom</h2>
+    <h4 >Abonnement: @abo.Forfait.Description  Client: @abo.Client.Nom @abo.Client.Prenom</h4>
 }
 
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <div class="table-responsive">
     <table class="table table-bordered table-striped " id="myDataTable">
         <thead>
@@ -25,9 +18,9 @@ else
                 <th>
                     Utilisateur
                 </th>
-                <th>
+                @*<th>
                     @Html.DisplayNameFor(model => model.User.Nom)
-                </th>
+                </th>*@
                 <th>
                     @Html.DisplayNameFor(model => model.Action)
                 </th>
@@ -45,9 +38,9 @@ else
                     <td>
                         @Html.DisplayFor(modelItem => item.User.UserName)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.User.Nom)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.Action)
                     </td>

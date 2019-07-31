@@ -126,7 +126,7 @@
             @Html.DisplayFor(modelItem => item.Renewal)
         </td>*@
                 <td>
-                    @item.DateFin
+                    @item.DateFin.ToShortDateString()
                 </td>
                 <td>
                     @if (item.ResteAPayer > 0)

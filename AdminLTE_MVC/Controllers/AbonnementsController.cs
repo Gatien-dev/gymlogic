@@ -42,6 +42,12 @@ namespace AdminLTE_MVC.Controllers
             ViewBag.action = "Abonnements presque Terminés";
             return View(abonnements.ToList());
         }
+        public ActionResult RefreshExpiring()
+        {
+
+            Utilities.checkAbonnements();
+            return RedirectToAction("expiring");
+        }
         public ActionResult Expired()
         {
             int abonnementAlertDays = Int32.Parse(WebConfigurationManager.AppSettings["AbonnementAlertDays"]);

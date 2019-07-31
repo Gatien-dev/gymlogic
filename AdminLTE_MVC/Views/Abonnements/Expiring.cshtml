@@ -20,11 +20,12 @@
 </a>
 
 <a href="javascript:window.print()" class="btn btn-primary no-print"><span class="fa fa-print"></span> Cliquez pour imprimer</a>
+<a href="@Url.Action("RefreshExpiring")" class="btn btn-primary no-print"><span class="fa fa-refresh"></span> Actualiser</a>
 <br />
 <br />
 <br />
-<div >
-    <table class="table table-bordered table-striped " id="my_data_table_no_page">
+<div  class="table table-responsive">
+    <table class="table table-bordered table-striped " id="myDataTable">
         <thead>
 
             <tr>
@@ -137,7 +138,8 @@
             @Html.DisplayFor(modelItem => item.Renewal)
         </td>*@
                 <td class="no-print">
-                    @Html.DisplayFor(modelItem => item.DateFin)
+                    @*@Html.DisplayFor(modelItem => item.DateFin.ToShortDateString())*@
+                    @item.DateFin.ToShortDateString()
                 </td>
                 <td class="no-print">
 

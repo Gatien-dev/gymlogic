@@ -21,10 +21,18 @@ namespace AdminLTE_MVC.Controllers
             var histories = db.Histories.Include(h => h.Abonnement).Include(h => h.User);
             if (abonnementId != 0)
             {
-                var abonnement = db.Abonnements.Where(a => a.ID == abonnementId).Include(a=>a.Client).Include(a => a.Forfait.Discipline).First();
+                var abonnement = db.Abonnements.Where(a => a.ID == abonnementId).Include(a => a.Client).Include(a => a.Forfait.Discipline).First();
                 ViewBag.abonnement = abonnement;
-                histories=db.Histories.Where(h=>h.AbonnementID==abonnementId).Include(h => h.Abonnement).Include(h => h.User);
+                histories = db.Histories.Where(h => h.AbonnementID == abonnementId).Include(h => h.Abonnement).Include(h => h.User);
+                ViewBag.action = "Historique de l'abonnement " + abonnement.Forfait.Description + " du client " + abonnement.Client.Nom + " " + abonnement.Client.Prenom;
             }
+            else
+            {
+                ViewBag.action = "Historique d'abonnements";
+            }
+            ViewBag.glyphicon = "fa fa-history";
+            ViewBag.controller = "Historique";
+            ViewBag.pageHeader = "Historique d'abonnements";
             return View(histories.ToList());
         }
 
@@ -44,6 +52,7 @@ namespace AdminLTE_MVC.Controllers
         }
 
         // GET: History/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.AbonnementID = new SelectList(db.Abonnements, "ID", "UserID");
@@ -56,6 +65,7 @@ namespace AdminLTE_MVC.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "ID,Action,Date,UserId,AbonnementID")] History history)
         {
             if (ModelState.IsValid)
@@ -71,6 +81,7 @@ namespace AdminLTE_MVC.Controllers
         }
 
         // GET: History/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -92,6 +103,7 @@ namespace AdminLTE_MVC.Controllers
         // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "ID,Action,Date,UserId,AbonnementID")] History history)
         {
             if (ModelState.IsValid)
@@ -106,6 +118,7 @@ namespace AdminLTE_MVC.Controllers
         }
 
         // GET: History/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,6 +135,7 @@ namespace AdminLTE_MVC.Controllers
 
         // POST: History/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
