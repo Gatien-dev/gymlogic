@@ -1,0 +1,50 @@
+﻿@model Gymlogic.Models.Data.History
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>History</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Abonnement.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Abonnement.UserID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Nom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Nom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

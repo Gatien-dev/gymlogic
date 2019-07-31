@@ -75,6 +75,9 @@ namespace IdentitySample.Models
 
         public System.Data.Entity.DbSet<AdminLTE_MVC.Models.ActivityLog> ActivityLogs { get; set; }
 
+        public System.Data.Entity.DbSet<Gymlogic.Models.Data.History> Histories { get; set; }
+        
+
         //public System.Data.Entity.DbSet<IdentitySample.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

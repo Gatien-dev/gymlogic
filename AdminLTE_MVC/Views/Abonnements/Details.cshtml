@@ -196,7 +196,7 @@
     {
         <a class="btn btn-success" href="@Url.Action("Payer", new { id = Model.ID })"><span class="fa fa-money"> </span> Payer</a>
     }
-
+    <a class="btn btn-success" href="@Url.Action("index","History", new { abonnementId = Model.ID })"><span class="fa fa-history"> </span> Historique</a>
     <a class="btn btn-primary @if (!Model.Activé) { @("disabled")}" href="@Url.Action("Renouveler", new { id = Model.ID })"><span class="fa fa-recycle"> </span> Renouveler</a>
     <a class="btn btn-default" href="@Url.Action("Index")"><span class="fa fa-arrow-circle-left"> </span> Retour</a>
 </div>

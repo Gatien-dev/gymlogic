@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Gymlogic.Models.Data.History>
+
+@{
+    ViewBag.Title = "Index";
+    Gymlogic.Models.Data.Abonnement abo = ViewBag.abonnement;
+}
+
+@if (abo == null)
+{
+    <h2>Historique des abonnements</h2>
+}
+else
+{
+    <h2>Historique de l'abonnement @abo.Forfait.Description du client @abo.Client.Nom @abo.Client.Prenom</h2>
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped " id="myDataTable">
+        <thead>
+            <tr>
+                <th>
+                    Utilisateur
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User.Nom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Action)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Nom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Action)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

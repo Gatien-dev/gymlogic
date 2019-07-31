@@ -211,7 +211,7 @@ namespace AdminLTE_MVC.Controllers
                     if (abonnement.History == null) abonnement.History = new List<History>();
                     abonnement.History.Add(new History()
                     {
-                        UserId = abonnement.UserID,
+                        UserId = User.Identity.GetUserId(),
                         Abonnement = abonnement,
                         Action = "Validation de l'abonnement",
                         Date = DateTime.Now,
@@ -309,7 +309,7 @@ namespace AdminLTE_MVC.Controllers
             if (abonnement.History == null) abonnement.History = new List<History>();
             abonnement.History.Add(new History()
             {
-                UserId = abonnement.UserID,
+                UserId = User.Identity.GetUserId(),
                 Abonnement = abonnement,
                 Action = "Validation de l'abonnement",
                 Date = DateTime.Now,
@@ -362,9 +362,9 @@ namespace AdminLTE_MVC.Controllers
             if (abonnement.History == null) abonnement.History = new List<History>();
             abonnement.History.Add(new History()
             {
-                UserId = abonnement.UserID,
+                UserId = User.Identity.GetUserId(),
                 Abonnement = abonnement,
-                Action = "Suspension de l'abonnement",
+                Action = "Suspension de l'abonnement a la date du " + date,
                 Date = DateTime.Now,
                 AbonnementID = abonnement.ID
             });
@@ -458,7 +458,7 @@ namespace AdminLTE_MVC.Controllers
                 if (abo.History == null) abo.History = new List<History>();
                 abo.History.Add(new History()
                 {
-                    UserId = abo.UserID,
+                    UserId = User.Identity.GetUserId(),
                     Abonnement = abo,
                     Action = "Creation de l'abonnement",
                     Date = DateTime.Now,
@@ -560,9 +560,9 @@ namespace AdminLTE_MVC.Controllers
                 if (dbAboEdit.History == null) dbAboEdit.History = new List<History>();
                 dbAboEdit.History.Add(new History()
                 {
-                    UserId = dbAboEdit.UserID,
+                    UserId = User.Identity.GetUserId(),
                     Abonnement = dbAboEdit,
-                    Action = "Modification de l'abonnement",
+                    Action = "Modification de l'abonnement date de debut: "+abonnement.DateDebut+" Duree: "+forfait.Duree+" Discipline: "+forfait.Discipline.Name,
                     Date = DateTime.Now,
                     AbonnementID = dbAboEdit.ID
                 });
@@ -609,10 +609,12 @@ namespace AdminLTE_MVC.Controllers
                 UserEmail = System.Web.HttpContext.Current.User.Identity.GetUserName(),
                 UserId = User.Identity.GetUserId(),
                 ActivityType = ActivityType.Delete,
-                LogMessage = "Suppression de l'abonnement de " + abonnement.Client.Nom + " " + abonnement.Client.Prenom + " dans la discipline " + abonnement.Forfait.Discipline.Name,
+                LogMessage = "Suppression de l'abonnement de "+abonnement.Forfait.Duree+" Jours de " + abonnement.Client.Nom + " " + abonnement.Client.Prenom + " dans la discipline " + abonnement.Forfait.Discipline.Name,
                 Motif = deleteMessage,
                 Date = DateTime.Now
             });
+            if (abonnement.NbJoursRestants >= 0) db.ActivityLogs.Last().LogMessage += " \n Abonnement expiré ";
+            else db.ActivityLogs.Last().LogMessage += " \n Abonnement en cours ";
             db.Abonnements.Remove(abonnement);
             db.Entry(abonnement).State = EntityState.Deleted;
             db.SaveChanges();
@@ -686,7 +688,7 @@ namespace AdminLTE_MVC.Controllers
             if (abonnement.History == null) abonnement.History = new List<History>();
             abonnement.History.Add(new History()
             {
-                UserId = abonnement.UserID,
+                UserId = User.Identity.GetUserId(),
                 Abonnement = abonnement,
                 Action = "Paiement de l'abonnement: Somme versee: " + montant,
                 Date = DateTime.Now,
@@ -716,7 +718,7 @@ namespace AdminLTE_MVC.Controllers
             if (abonnement.History == null) abonnement.History = new List<History>();
             abonnement.History.Add(new History()
             {
-                UserId = abonnement.UserID,
+                UserId = User.Identity.GetUserId(),
                 Abonnement = abonnement,
                 Action = "Activation de l'abonnement",
                 Date = DateTime.Now,
@@ -752,9 +754,9 @@ namespace AdminLTE_MVC.Controllers
             if (abonnement.History == null) abonnement.History = new List<History>();
             abonnement.History.Add(new History()
             {
-                UserId = abonnement.UserID,
+                UserId = User.Identity.GetUserId(),
                 Abonnement = abonnement,
-                Action = "Reprise de l'abonnement",
+                Action = "Reprise de l'abonnement a la date du " + date,
                 Date = DateTime.Now,
                 AbonnementID = abonnement.ID
             });
